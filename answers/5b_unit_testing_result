@@ -1,0 +1,11 @@
+theia@theiadocker-arshadrazvi:/home/project/final_project$ python3 test_emotion_detection.py 
+joy
+anger
+disgust
+sadness
+fear
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.639s
+
+OK
