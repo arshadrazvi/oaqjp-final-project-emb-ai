@@ -40,8 +40,8 @@ def emotion_detector(text_to_analyze):
             'joy': None,
             'sadness': None,
             'dominant_emotion': None
-        }, {'label': None}, {'error': response.status_code}
- 
+        }, {'label': None}
+
     formatted_response = json.loads(response.text)
 
     emotions = formatted_response['emotionPredictions'][0]['emotion']

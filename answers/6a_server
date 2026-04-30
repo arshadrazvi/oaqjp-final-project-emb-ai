@@ -9,7 +9,7 @@ from emotion_detection import emotion_detector
 #Initiate the flask app
 app = Flask("Emotions Detector")
 
-@app. route("/emotionDetector")
+@app.route("/emotionDetector")
 def sent_analyzer():
     ''' This code receives the text from the HTML interface and
         runs emotional analysis over it using emotion detection)
