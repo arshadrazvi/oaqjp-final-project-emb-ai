@@ -6,13 +6,13 @@
 import json
 import requests
 
-def handle_error(error, message):
+def handle_error(error):
     ''' 
-        Error handling functio
+        Error handling function
     '''
     return {
         'error': error,
-        'message': message
+        'message': 'Invalid text! Please try again!'
     }
 
 def emotion_detector(text_to_analyze):
@@ -28,18 +28,26 @@ def emotion_detector(text_to_analyze):
     myobj = { "raw_document": { "text": text_to_analyze } }
 
     response = requests.post(url, json=myobj, headers=header, timeout = 10)
+    formatted_response = json.loads(response.text)
+
+    print('response code:',response.status_code, type(response.status_code))
+
     if response.status_code == 400:
-        print ('***ERROR DETECTED***')
+        print ('inside check--------')
         return {
-            'error': '400',
-            'message': 'Invalid text! Please try again!'
-        }
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }, {'label': None}
 
     formatted_response = json.loads(response.text)
+
     emotions = formatted_response['emotionPredictions'][0]['emotion']
+
     dominant_emotion = max(emotions, key=emotions.get)
     emotions['dominant_emotion'] = dominant_emotion
 
-    print(emotions['dominant_emotion'])
-
-    return emotions, {'label': emotions['dominant_emotion']}
+    return emotions, {'label': dominant_emotion}

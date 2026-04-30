@@ -19,15 +19,19 @@ def sent_analyzer():
 
     text_to_analyze = request.args.get('textToAnalyze')
     response = emotion_detector(text_to_analyze)
+    print('----response----', response)
+    
+    emotions = response[0]   # first dict
+    label_info = response[1] # second dict
 
     return (
         "For the given statement, the system response is "
-        f"'anger': {response[0]['anger']}, "
-        f"'disgust': {response[0]['disgust']}, "
-        f"'fear': {response[0]['fear']}, "
-        f"'joy': {response[0]['joy']} and "
-        f"'sadness': {response[0]['sadness']}. "
-        f"The dominant emotion is {response[0]['dominant_emotion']}."
+        f"'anger': {emotions['anger']}, "
+        f"'disgust': {emotions['disgust']}, "
+        f"'fear': {emotions['fear']}, "
+        f"'joy': {emotions['joy']} and "
+        f"'sadness': {emotions['sadness']}. "
+        f"The dominant emotion is {emotions['dominant_emotion']}."
     )
 
 @app. route("/")
