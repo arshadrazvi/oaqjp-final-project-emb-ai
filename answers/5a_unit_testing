@@ -1,29 +1,38 @@
 '''
-    This module takes text as input and finds the dominant
-    emotion based on NLP processing
+    Test cases for emotion_detection.py
 '''
 
-import json
-import requests
+import unittest
+from emotion_detection import emotion_detector
 
-def emotion_detector(text_to_analyze):
+class TestEmotionDetectionr(unittest.TestCase):
     '''
-        Function calling for the IBM NLP to analyze the text
+        Test cases class designation for unit test
     '''
 
-    url = (
-            "https://sn-watson-emotion.labs.skills.network/v1/"
-            "watson.runtime.nlp.v1/NlpService/EmotionPredict"
-        )
-    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
-    myobj = { "raw_document": { "text": text_to_analyze } }
-    response = requests.post(url, json=myobj, headers=header, timeout = 10)
+    def test_emotion_detection(self):
+        '''
+            function for unit testing against
+            all emotions
+        '''
+        # Test case for positive sentiment
+        result_1 = emotion_detector('I am glad this happened')
+        self.assertEqual(result_1[1]['label'], 'joy')
 
-    formatted_response = json.loads(response.text)
-    emotions = formatted_response['emotionPredictions'][0]['emotion']
-    dominant_emotion = max(emotions, key=emotions.get)
-    emotions['dominant_emotion'] = dominant_emotion
+        # Test case for negative sentiment
+        result_2 = emotion_detector('I am really mad about this')
+        self.assertEqual(result_2[1]['label'], 'anger')
 
-    print(emotions['dominant_emotion'])
+        # Test case for neutral sentiment
+        result_3 = emotion_detector('I feel disgusted just hearing about this')
+        self.assertEqual(result_3[1]['label'], 'disgust')
 
-    return emotions, {'label': emotions['dominant_emotion']}
+        # Test case for neutral sentiment
+        result_4 = emotion_detector('I am so sad about this')
+        self.assertEqual(result_4[1]['label'], 'sadness')
+
+        # Test case for neutral sentiment
+        result_5 = emotion_detector('I am really afraid that this will happen')
+        self.assertEqual(result_5[1]['label'], 'fear')
+
+unittest.main()
